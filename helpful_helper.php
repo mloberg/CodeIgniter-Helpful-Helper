@@ -124,7 +124,7 @@ if(!function_exists('href')){
  */
 
 if(!function_exists('href_ext')){
-	function href_ext($link,$title){
-		return "<a href=\"$link\">$title</a>";
+	function href_ext($link,$title,$other=''){
+		return "<a href=\"$link\" $other>$title</a>";
 	}
 }
