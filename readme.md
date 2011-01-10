@@ -8,7 +8,7 @@ Author: Matthew Loberg
 
 Author URL: http://mloberg.com
 
-Version: 0.2
+Version: 0.3
 
 Licence: Copyright (c) 2011 Matthew Loberg under the MIT Licence (licence.txt)
 
@@ -27,6 +27,11 @@ To use, just drag helpful_helper.php to application/helpers. Then you can use it
 ***
 
 ## Changelog
+
+### 0.3
+
+* You can now specify a path for your css and image folder
+* Added javascript_link_tag function
 
 ### 0.2
 

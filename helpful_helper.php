@@ -5,7 +5,7 @@
  * URL: http://playground.teafueled.com/ci/helpers/helpful
  * Author: Matthew Loberg
  * Author URL: http://mloberg.com
- * Version: 0.2
+ * Version: 0.3
  * Licence: Copyright (c) 2011 Matthew Loberg under the MIT Licence (licence.txt)
  * Understandable Licence: http://creativecommons.org/licenses/MIT/
  *
@@ -21,8 +21,8 @@
  */
 
 if(!function_exists('stylesheet_link_tag')){
-	function stylesheet_link_tag($stylesheet){
-		return '<link rel="stylesheet" href="' . base_url() . 'css/' . $stylesheet .'.css" />';
+	function stylesheet_link_tag($stylesheet,$path='css/'){
+		return '<link rel="stylesheet" href="' . base_url() . $path . $stylesheet .'.css" />';
 	}   
 }
 
@@ -31,8 +31,8 @@ if(!function_exists('stylesheet_link_tag')){
  */
 
 if(!function_exists('stylesheet_reset')){
-	function stylesheet_reset(){
-		return '<link rel="stylesheet" href="' . base_url() . 'css/reset.css" />';
+	function stylesheet_reset($path='css/'){
+		return '<link rel="stylesheet" href="' . base_url() . $path . 'reset.css" />';
 	}
 }
 
@@ -41,8 +41,8 @@ if(!function_exists('stylesheet_reset')){
  */
 
 if(!function_exists('stylesheet_grid')){
-	function stylesheet_grid(){
-		return '<link rel="stylesheet" href="' . base_url() . 'css/960.css" />';
+	function stylesheet_grid($path='css/'){
+		return '<link rel="stylesheet" href="' . base_url() . $path . '960.css" />';
 	}
 }
 
@@ -52,11 +52,11 @@ if(!function_exists('stylesheet_grid')){
  */
 
 if(!function_exists('stylesheet_link_multi')){
-	function stylesheet_link_multi($stylesheets){
+	function stylesheet_link_multi($stylesheets,$path='css/'){
 		$css = '';
 		if(is_array($stylesheets)){
 			foreach($stylesheets as $stylesheet){
-				$css .= "<link rel=\"stylesheet\" href=\"".base_url()."css/$stylesheet.css\" />\n";
+				$css .= "<link rel=\"stylesheet\" href=\"".base_url()."$path/$stylesheet.css\" />\n";
 			}
 		}
 		// we return this outside of the if statement to fail silently, if it's not an array
@@ -69,9 +69,9 @@ if(!function_exists('stylesheet_link_multi')){
  */
 
 if(!function_exists('stylesheet_link_all')){
-	function stylesheet_link_all(){
+	function stylesheet_link_all($path='css/'){
 		// scan the dir for all the files
-		$dir = './css';
+		$dir = './' . $path;
 		$files = scandir($dir);
 		//print_r($files);
 		// set up the var to store the files in
@@ -80,7 +80,7 @@ if(!function_exists('stylesheet_link_all')){
 			// then find out if they have the css extension
 			if(preg_match('/^\S+\.(css)$/',$file)){
 				// it's a css file, append to return string
-				$css .= "<link rel=\"stylesheet\" href=\"" . base_url() . "css/$file\" />\n";
+				$css .= "<link rel=\"stylesheet\" href=\"" . base_url() . "$path/$file\" />\n";
 			}
 		}
 		return $css;
@@ -95,9 +95,9 @@ if(!function_exists('stylesheet_link_all')){
  */
 
 if(!function_exists('image_tag')){
-	function image_tag($img,$alt,$scale=''){
+	function image_tag($img,$alt,$scale='',$path='img/'){
 		// get the image size
-		$img = base_url() . 'img/' . $img;
+		$img = base_url() . $path . $img;
 		list($w,$h,$type,$attr) = getimagesize($img);
 		// if scale is set, scale the image
 		if($scale){
@@ -105,6 +105,36 @@ if(!function_exists('image_tag')){
 			$h = $h * $scale;
 		}
 		return '<img src="'.$img.'" alt="'.$alt.'" width="'.$w.'" height="'.$h.'" />';
+	}
+}
+
+/**
+ * Returns a <script> tag.
+ * You can send a single file, an array, or ":all" (for all js)
+ */
+
+if(!function_exists('javascript_link_tag')){
+	function javascript_link_tag($js,$path='js/'){
+		$javascript_tags = '';
+		if(is_array($js)){
+			foreach($js as $j){
+				$javascript_tags .= "<script src=\"".base_url()."$path$j.js\"></script>\n";
+			}
+		}elseif($js == ':all'){
+			// scan the dir for all the files
+			$dir = './' . $path;
+			$files = scandir($dir);
+			foreach($files as $file){
+				// find out if they have the css extension
+				if(preg_match('/^\S+\.(js)$/',$file)){
+					// it's a javascript file, append to return string
+					$javascript_tags .= "<script src=\"" . base_url() . "$path$file\"></script>\n";
+				}
+			}
+		}else{
+			$javascript_tags = "<script src=\"".base_url()."$path$js.js\"></script>";
+		}
+		return $javascript_tags;
 	}
 }
 
@@ -124,8 +154,8 @@ if(!function_exists('href')){
  */
 
 if(!function_exists('href_ext')){
-	function href_ext($link,$title,$other=''){
-		return "<a href=\"$link\" $other>$title</a>";
+	function href_ext($link,$title){
+		return "<a href=\"$link\">$title</a>";
 	}
 }
 
